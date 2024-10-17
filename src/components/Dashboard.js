@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const { currentUser, setCurrentUser } = useAuth();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentUser && !currentUser.emailVerified) {
@@ -23,7 +23,7 @@ export default function Dashboard() {
 
     try {
       await signOut(auth);
-      history.push('/login');
+      navigate('/login');
     } catch {
       setError('Failed to log out');
     }
